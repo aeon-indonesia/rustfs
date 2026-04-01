@@ -64,7 +64,7 @@ export function ObjectPathLinks({ objectKey, bucketName, onClick }: ObjectPathLi
             <button
               type="button"
               onClick={() => handleClick(segment)}
-              className={segment.index > -1 ? "text-blue-500 hover:underline" : "cursor-default"}
+              className={segment.index > -1 ? "text-primary hover:underline" : "cursor-default"}
             >
               {segment.value}
             </button>

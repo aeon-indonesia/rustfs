@@ -1,0 +1,99 @@
+# RustFS with a single data volume, static console in a separate image, and nginx
+# as the single entrypoint (S3 API + admin API + /rustfs/console static UI on one port).
+#
+# Usage: docker compose up -d
+# Console: http://localhost:9000/rustfs/console/
+# S3 / admin API: http://localhost:9000
+
+services:
+  rustfs:
+    image: rustfs/rustfs:latest
+    container_name: rustfs-server
+    depends_on:
+      volume-permission-helper:
+        condition: service_completed_successfully
+    security_opt:
+      - "no-new-privileges:true"
+    expose:
+      - "9000"
+    environment:
+      - RUSTFS_VOLUMES=/data/rustfs0
+      - RUSTFS_ADDRESS=0.0.0.0:9000
+      - RUSTFS_CONSOLE_ENABLE=false
+      - RUSTFS_CORS_ALLOWED_ORIGINS=*
+      - RUSTFS_ACCESS_KEY=rustfsadmin
+      - RUSTFS_SECRET_KEY=rustfsadmin
+      - RUSTFS_OBS_LOGGER_LEVEL=info
+      - RUSTFS_OBJECT_CACHE_ENABLE=true
+      - RUSTFS_OBJECT_CACHE_TTL_SECS=300
+      - RUSTFS_LOG_DIR=/var/log/rustfs
+    volumes:
+      - rustfs_data:/data/rustfs0
+      - logs:/var/log/rustfs
+    networks:
+      - rustfs-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "sh", "-c", "curl -fsS http://127.0.0.1:9000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  volume-permission-helper:
+    image: alpine:3.21
+    networks:
+      - rustfs-network
+    volumes:
+      - rustfs_data:/data0
+      - logs:/var/log/rustfs
+    command: >
+      sh -c "
+        chown -R 10001:10001 /data0 /var/log/rustfs &&
+        echo 'Volume permissions fixed' &&
+        exit 0
+      "
+    restart: "no"
+
+  console:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.console
+    container_name: rustfs-console-nginx
+    depends_on:
+      rustfs:
+        condition: service_healthy
+    ports:
+      - "9000:80"
+    networks:
+      - rustfs-network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "sh",
+          "-c",
+          "curl -fsS http://127.0.0.1/health && curl -fsS http://127.0.0.1/rustfs/console/",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+networks:
+  rustfs-network:
+
+volumes:
+  rustfs_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /var/lib/rustfs
+      o: bind
+  logs:
+    driver: local
+    driver_opts:
+      type: none
+      device: /var/log/rustfs
+      o: bind

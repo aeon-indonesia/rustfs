@@ -249,7 +249,7 @@ export function ObjectList({
             return (
               <Link
                 href={bucketPath(row.original.Key)}
-                className="flex items-center gap-2 text-blue-500 hover:underline"
+                className="flex items-center gap-2 text-primary hover:underline"
               >
                 <RiFolderLine className="size-4" />
                 <span>{display}</span>

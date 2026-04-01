@@ -1,0 +1,13 @@
+node_modules
+.next
+out
+.git
+.theme-runtime
+.cursor
+*.md
+.env
+.env.*
+!.env.example
+coverage
+playwright-report
+test-results

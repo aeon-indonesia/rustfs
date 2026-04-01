@@ -14,7 +14,13 @@
     "type-check": "node scripts/apply-theme-overrides.js && tsc --noEmit",
     "prettier": "prettier",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "docker:compose:up": "docker compose up -d --build",
+    "docker:compose:down": "docker compose down",
+    "docker:compose:build": "docker compose build console",
+    "dev:rustfs": "docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d rustfs --wait",
+    "dev:rustfs:down": "docker compose -f docker-compose.yml -f docker-compose.dev.yml stop rustfs",
+    "dev:with-rustfs": "pnpm dev:rustfs && pnpm dev"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1014.0",

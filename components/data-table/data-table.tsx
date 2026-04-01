@@ -148,7 +148,7 @@ export function DataTable<TData>({
   return (
     <div className={cn("flex flex-col gap-4", className)}>
       {bodyHeight ? (
-        <ScrollArea className={cn("rounded-md border", bodyHeight)}>{tableContent}</ScrollArea>
+        <ScrollArea className={cn("data-table-container rounded-md border", bodyHeight)}>{tableContent}</ScrollArea>
       ) : (
         tableContent
       )}

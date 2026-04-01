@@ -36,7 +36,7 @@ export function AuthHeroStatic() {
       </div>
       <Link
         href="https://www.rustfs.com"
-        className="z-10 inline-flex w-max items-center gap-2 rounded-full border border-blue-500 p-2 px-5 leading-none text-primary-500"
+        className="z-10 inline-flex w-max items-center gap-2 rounded-full border border-primary p-2 px-5 leading-none text-primary"
       >
         <span>{t("Visit website")}</span>
         <RiArrowRightLongFill className="me-2 rtl:-scale-x-100" />

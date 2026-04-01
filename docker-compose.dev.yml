@@ -1,0 +1,9 @@
+# Local development: expose RustFS S3/admin API on the host (:9000) without the nginx console.
+# Use with: docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d rustfs --wait
+#
+# Then run the Next.js app (e.g. pnpm dev). Do not start the `console` service or port 9000 will conflict.
+
+services:
+  rustfs:
+    ports:
+      - "9000:9000"

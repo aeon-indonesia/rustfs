@@ -153,8 +153,8 @@ export function AppSidebar() {
               <span>{brandInitial}</span>
             </div>
           ) : (
-            <div className="flex min-w-0 items-baseline gap-2 px-3 py-4">
-              <ThemeLogo width={64} height={16} className="h-4 w-auto shrink-0" alt={APP_NAME} />
+            <div className="flex min-w-0 items-baseline gap-2 justify-center px-3 py-4">
+              <ThemeLogo width={64} height={32} className="h-8 w-auto shrink-0" alt={APP_NAME} />
             </div>
           )}
         </Link>
