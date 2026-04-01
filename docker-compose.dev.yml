@@ -6,4 +6,4 @@
 services:
   rustfs:
     ports:
-      - "9000:9000"
+      - "${RUSTFS_HOST_PORT:-9000}:9000"
