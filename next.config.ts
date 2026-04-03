@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  allowedDevOrigins: ['10.123.38.171'],
+  allowedDevOrigins: ['localhost'],
 }
 
 export default nextConfig
